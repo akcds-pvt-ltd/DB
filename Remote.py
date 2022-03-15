@@ -25,30 +25,29 @@ def csv_option():
                 print(str(ip) + " is down!")
             else:
                 ssh.connect(list_of_rows[rows][0], list_of_rows[rows][1], list_of_rows[rows][2], list_of_rows[rows][3])
-                #ssh.connect(host, port, username, password)
                 stdin, stdout, stderr = ssh.exec_command("hostname")
                 pcname = stdout.readline()
-                print(pcname)
+                #print(pcname)
                 stdin, stdout, stderr = ssh.exec_command("wmic ComputerSystem get TotalPhysicalMemory")
                 totalram = stdout.readlines()[1]
-                print(totalram)
+                #print(totalram)
                 stdin, stdout, stderr = ssh.exec_command("wmic OS get FreePhysicalMemory")
                 freeram = stdout.readlines()[1]
-                print(freeram)
+                #print(freeram)
                 ramusage = ((int(totalram)-(int(freeram)*1024))/int(totalram))*100 
-                print(str(ramusage))
+                #print(str(ramusage))
                 stdin, stdout, stderr = ssh.exec_command("ver")
                 version = stdout.readlines()[1]
-                print(version)
+                #print(version)
                 stdin, stdout, stderr = ssh.exec_command("wmic logicaldisk get size, freespace, caption")
                 disk1 = stdout.readlines()[1]
                 a,b= [int(word) for word in str(disk1).split() if word.isdigit()]
                 c=(a/b)*100
-                print("Disk Usage:" + str("%.0f" % c)+"%")
-                fileName = "Remote"
-               	backupFile = open(fileName + ".txt", "a")
-               	backupFile.write("\n\n" + str(pcname) + "Ram Usage:" + str("%.0f" % ramusage) + "%" + "\nDisk Usage:" + str("%.0f" % c) +"%" +"\n"+ str(version))
+                #print("Disk Usage:" + str("%.0f" % c)+"%")
+                #fileName = "Remote"
+               	#backupFile = open(fileName + ".txt", "a")
+               	#backupFile.write("\n\n" + str(pcname) + "Ram Usage:" + str("%.0f" % ramusage) + "%" + "\nDisk Usage:" + str("%.0f" % c) +"%" +"\n"+ str(version))
                	csv_writer.writerow([str(pcname), str("%.0f" % ramusage), str("%.0f" % c), str(version)])
           
 csv_option()
-
+print ("Please check outfile.csv for result")
